@@ -20,13 +20,7 @@ class RandomChar extends Component {
         this.characters.getOneCharacter(Math.floor(Math.random() * (1011400 - 1011000) + 1011000 ))
             .then(result => {
                 console.log(result)
-                this.setState({
-                    name: result.data.results[0].name,
-                    description: result.data.results[0].description,
-                    thumbnail: result.data.results[0].thumbnail.path + '.' + result.data.results[0].thumbnail.extension, 
-                    homepage: result.data.results[0].urls[0].url,
-                    wiki: result.data.results[0].urls[1].url
-                })
+                this.setState(result)
         })
     }
     render() {
