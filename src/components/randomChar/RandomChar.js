@@ -19,9 +19,9 @@ class RandomChar extends Component {
     updateCharacters = () => {
         this.characters.getOneCharacter(Math.floor(Math.random() * (1011400 - 1011000) + 1011000 ))
             .then(result => {
-                console.log(result)
                 this.setState(result)
-        })
+            })
+        this.characters.getAllCharacters().then(result => console.log(result))
     }
     render() {
         const {name, description, thumbnail, homepage, wiki} = this.state
