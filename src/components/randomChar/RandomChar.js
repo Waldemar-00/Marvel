@@ -9,22 +9,32 @@ class RandomChar extends Component {
         this.updateCharacters()
     }
     state = {
-        name: null,
-        description: null,
-        thumbnail: null, 
-        homepage: null,
-        wiki: null
+        character: {}
+    }
+    onCharChange = (character) => {
+        if (!character.description) {
+            character.description = 'No description about this character!'
+        }
+        if (character.description.length > 185) {
+            character.description = character.description.slice(0, 185) + '...'
+        }
+        this.setState({ character })
     }
     characters = new MarvelServices()
     updateCharacters = () => {
         this.characters.getOneCharacter(Math.floor(Math.random() * (1011400 - 1011000) + 1011000 ))
             .then(result => {
-                this.setState(result)
+                console.log(result)
+                if (!result.name) {
+                    this.updateCharacters()
+                } else {
+                    this.onCharChange(result)
+                }
             })
-        this.characters.getAllCharacters().then(result => console.log(result))
+        // this.characters.getAllCharacters().then(result => console.log(result))
     }
     render() {
-        const {name, description, thumbnail, homepage, wiki} = this.state
+        const {character: { name, description, thumbnail, homepage, wiki }} = this.state
         return (
             <div className="randomchar">
                 <div className="randomchar__block">

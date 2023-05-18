@@ -5,6 +5,7 @@ class MarvelServices {
   getResource = async (url) => {
     const result = await fetch(url)
     if (!result.ok) {
+      this.getOneCharacter()
       throw new Error (`Could not  ${url}, status : ${result.status}`)
     }
     return await result.json()
@@ -12,13 +13,16 @@ class MarvelServices {
   getAllCharacters = async () => {
     const result = await this.getResource(`${this._apiBase}characters?limit=9&offset=210&${this._apiRey}`)
     console.log(result)
-    return result.data.results.map(char => {
-      return this._transformCharacter(char)
-    })
+    return result.data.results.map(this._transformCharacter)
   }
   getOneCharacter = async (characterId) => {
-    const result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
-    return this._transformCharacter(result.data.results[0])
+    let result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
+    console.log(result.status)
+    // if (result.status !== 'Ok') {
+      // result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
+    // } else {
+      return this._transformCharacter(result.data.results[0])
+    //}
   }
   _transformCharacter = (character) => {
     return {
