@@ -14,15 +14,15 @@ class MarvelServices {
   }
   getOneCharacter = async (characterId) => {
     const result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
-    return this._transformCharacter(result)
+    return this._transformCharacter(result.data.results[0])
   }
-  _transformCharacter = (result) => {
+  _transformCharacter = (character) => {
     return {
-      name: result.data.results[0].name,
-      description: result.data.results[0].description,
-      thumbnail: result.data.results[0].thumbnail.path + '.' + result.data.results[0].thumbnail.extension,
-      homepage: result.data.results[0].urls[0].url,
-      wiki: result.data.results[0].urls[1].url
+      name: character.name,
+      description: character.description,
+      thumbnail: character.thumbnail.path + '.' + character.thumbnail.extension,
+      homepage: character.urls[0].url,
+      wiki: character.urls[1].url
     }
   }
 }
