@@ -15,8 +15,8 @@ class RandomChar extends Component {
         if (!character.description) {
             character.description = 'No description about this character!'
         }
-        if (character.description.length > 185) {
-            character.description = character.description.slice(0, 185) + '...'
+        if (character.description.length > 188) {
+            character.description = character.description.slice(0, 186) + '...'
         }
         this.setState({ character })
     }
