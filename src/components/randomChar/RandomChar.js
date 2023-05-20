@@ -6,15 +6,19 @@ import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 
 class RandomChar extends Component {
-    constructor(props) {
-        super(props)
-        this.updateCharacters()
-    }
     state = {
         character: {},
         loading: true,
         error: false
     }
+    componentDidMount() {
+        this.updateCharacters()
+        this.timerId = setInterval(this.updateCharacters, 5000)
+    }
+    componentWillUnmount() {
+        clearInterval(this.timerId)
+    }
+    characters = new MarvelServices()
     onCharChange = (character) => {
         if (!character.description) {
             character.description = 'No description about this character!'
@@ -27,7 +31,6 @@ class RandomChar extends Component {
             loading: false, 
         })
     }
-    characters = new MarvelServices()
     onError = () => {
     this.setState({
             loading: false,

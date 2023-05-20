@@ -6,10 +6,8 @@ class MarvelServices {
   getResource = async (url) => {
     const result = await fetch(url)
     if (!result.ok) {
-      // this.getOneCharacter()
       throw new Error (`Could not  ${url}, status : ${result.status}`)
     }
-    console.log(result.status)
     return await result.json()
   }
   getAllCharacters = async () => {
