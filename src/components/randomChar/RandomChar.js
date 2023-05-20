@@ -43,6 +43,10 @@ class RandomChar extends Component {
             .then(this.onCharChange)
             .catch(this.onError)
     }
+    onClickUpdate = () => {
+        this.updateCharacters()
+        clearInterval(this.timerId)
+    }
     render() {
         const { character, loading, error } = this.state
         const errorMessage = error ? <ErrorMessage /> : null
@@ -61,7 +65,7 @@ class RandomChar extends Component {
                     <p className="randomchar__title">
                         Or choose another one
                     </p>
-                    <button className="button button__main">
+                    <button className="button button__main" onClick={this.onClickUpdate}>
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
