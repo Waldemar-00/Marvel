@@ -44,6 +44,7 @@ class RandomChar extends Component {
             .catch(this.onError)
     }
     onClickUpdate = () => {
+        this.setState({error: false})
         this.updateCharacters()
         clearInterval(this.timerId)
     }
@@ -54,8 +55,6 @@ class RandomChar extends Component {
         const content = errorMessage ? <ErrorMessage /> : spinner ? <Spinner /> : <View character={character} />
         return (
             <div className="randomchar">
-                {/* {errorMessage} */}
-                {/* {spinner} */}
                 {content}
                 <div className="randomchar__static">
                     <p className="randomchar__title">
@@ -77,7 +76,7 @@ class RandomChar extends Component {
 const View = ({character}) => {
     const { name, description, thumbnail, homepage, wiki } = character
     const styleImg = thumbnail.includes('image_not_available') ? { objectFit: 'fill' } : null
-    const styleName = name.length > 22 ? {fontSize: '20px'} : null
+    const styleName = name.length > 22 ? {fontSize: '18px'} : null
     return (
         <div className="randomchar__block">
             <img src={ thumbnail } style={styleImg} alt="Random character" className="randomchar__img"/>
