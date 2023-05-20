@@ -36,7 +36,7 @@ class RandomChar extends Component {
             loading: false,
             error: true
         })
-}
+    }
     updateCharacters = () => {
         this.characters
             .getOneCharacter(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
@@ -72,9 +72,10 @@ class RandomChar extends Component {
 }
 const View = ({character}) => {
     const { name, description, thumbnail, homepage, wiki } = character
+    const style = thumbnail.includes('image_not_available') ? { objectFit: 'fill' } : null  
     return (
         <div className="randomchar__block">
-            <img src={ thumbnail } alt="Random character" className="randomchar__img"/>
+            <img src={ thumbnail } style={style} alt="Random character" className="randomchar__img"/>
             <div className="randomchar__info">
                 <p className="randomchar__name">{ name }</p>
                 <p className="randomchar__descr">
