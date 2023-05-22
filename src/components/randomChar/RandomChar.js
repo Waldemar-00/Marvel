@@ -11,6 +11,7 @@ class RandomChar extends Component {
         loading: true,
         error: false
     }
+    characters = new MarvelServices()
     componentDidMount() {
         this.updateCharacters()
         this.timerId = setInterval(this.updateCharacters, 5000)
@@ -18,7 +19,6 @@ class RandomChar extends Component {
     componentWillUnmount() {
         clearInterval(this.timerId)
     }
-    characters = new MarvelServices()
     onCharChange = (character) => {
         if (!character.description) {
             character.description = 'No description about this character!'
@@ -44,7 +44,7 @@ class RandomChar extends Component {
             .catch(this.onError)
     }
     onClickUpdate = () => {
-        this.setState({error: false})
+        this.setState({error: false, loading: true})
         this.updateCharacters()
         clearInterval(this.timerId)
     }

@@ -15,7 +15,7 @@ class MarvelServices {
     return result.data.results.map(this._transformCharacter)
   }
   getOneCharacter = async (characterId) => {
-    let result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
+    const result = await this.getResource(`${this._apiBase}characters/${characterId}?${this._apiRey}`)
     return this._transformCharacter(result.data.results[0])
   }
   _transformCharacter = (character) => {
