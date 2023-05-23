@@ -12,7 +12,6 @@ class CharList extends Component {
     characters = new MarvelServices()
     componentDidMount() {
         this.characters.getAllCharacters().then(result => {
-            console.log(result)
             return this.onLoad(result)
         }).catch(error => console.log(this.onError))
     }

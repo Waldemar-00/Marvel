@@ -12,6 +12,7 @@ class MarvelServices {
   }
   getAllCharacters = async () => {
     const result = await this.getResource(`${this._apiBase}characters?limit=9&offset=210&${this._apiRey}`)
+    console.log(result)
     return result.data.results.map(this._transformCharacter)
   }
   getOneCharacter = async (characterId) => {
