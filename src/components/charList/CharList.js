@@ -11,9 +11,10 @@ class CharList extends Component {
     }
     characters = new MarvelServices()
     componentDidMount() {
-        this.characters.getAllCharacters().then(result => {
-            return this.onLoad(result)
-        }).catch(error => console.log(this.onError))
+        this.onLoading()
+        this.characters.getAllCharacters()
+            .then(this.onLoad)
+            .catch(this.onError)
     }
     onLoad = (result) => {
         this.setState({
@@ -26,7 +27,11 @@ class CharList extends Component {
             loading: false,
             error: true
         })
-        
+    }
+    onLoading = () => {
+        this.setState({
+        loading:  true,
+        })
     }
     makeLi = (array) => {
         const list = array.map(li => {
@@ -48,7 +53,7 @@ class CharList extends Component {
         const { arrayOfCharacters, loading, error } = this.state
         const errorMessage = error ? <ErrorMessage /> : null
         const spinner = loading ? <Spinner /> : null
-        const contant = error ? errorMessage : loading ? spinner : this.makeLi(arrayOfCharacters)
+        const contant = errorMessage ? errorMessage : spinner ? spinner : this.makeLi(arrayOfCharacters)
         return (
             <div className="char__list">
                 {contant}
