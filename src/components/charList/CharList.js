@@ -32,7 +32,7 @@ class CharList extends Component {
         const list = array.map(li => {
             const liStyle = li.thumbnail.includes('image_not_available') ? { 'objectFit': 'fill' } : { 'objectFit': 'cover' }
             return (
-                <li className="char__item" key={li.id}>
+                <li className="char__item" key={li.id} onClick={() => this.props.upStateForCharacter(li.id)}>
                     <img src={li.thumbnail} alt={li.name} style={liStyle}/>
                     <div className="char__name">{li.name}</div>
                 </li>
