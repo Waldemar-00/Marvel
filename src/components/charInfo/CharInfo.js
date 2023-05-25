@@ -4,7 +4,6 @@ import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
 import Skeleton from '../skeleton/Skeleton'
 import './charInfo.scss'
-import thor from '../../resources/img/thor.jpeg'
 
 class CharInfo extends Component {
     state = {
@@ -12,15 +11,22 @@ class CharInfo extends Component {
         error: false,
         character: null
     }
-    character = new MarvelServices()
+    marvelServices = new MarvelServices()
     componentDidMount() {
         this.updateCharacter()
+    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log(this.state.character)
+        if (this.props.getIdCharacterFromState !== prevProps.getIdCharacterFromState) {
+            this.updateCharacter()
+        }
     }
     updateCharacter = () => {
         const { getIdCharacterFromState } = this.props
         if (!getIdCharacterFromState) return
         this.onLoading()
-        this.character.getOneCharacter(getIdCharacterFromState)
+        console.log(getIdCharacterFromState)
+        this.marvelServices.getOneCharacter(getIdCharacterFromState)
             .then(this.onLoad)
             .catch(this.onError)
     }
@@ -58,28 +64,25 @@ class CharInfo extends Component {
     }
 }
 const View = ({ character }) => {
+    const {name, description, thumbnail, homepage, wiki} = character
     return (
         <>
             <div className="char__basics">
-                <img src={thor} alt="abyss"/>
+                <img src={thumbnail} alt="name"/>
                 <div>
-                    <div className="char__info-name">thor</div>
+                    <div className="char__info-name">{name}</div>
                     <div className="char__btns">
-                        <a href="#" className="button button__main">
+                        <a href={homepage} className="button button__main">
                             <div className="inner">homepage</div>
                         </a>
-                        <a href="#" className="button button__secondary">
+                        <a href={wiki} className="button button__secondary">
                             <div className="inner">Wiki</div>
                         </a>
                     </div>
                 </div>
             </div>
             <div className="char__descr">
-                In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr.
-    By 
-    the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/
-    or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In 
-    addition, Loki is referred to as the father of Váli in the Prose Edda.
+                {description}
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
