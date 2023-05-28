@@ -25,12 +25,11 @@ class CharInfo extends Component {
         const { getIdCharacterFromState } = this.props
         if (!getIdCharacterFromState) return
         this.onLoading()
-        console.log(getIdCharacterFromState)
         this.marvelServices.getOneCharacter(getIdCharacterFromState)
-            .then(this.onLoad)
+            .then(this.onLoaded)
             .catch(this.onError)
     }
-    onLoad = (character) => {
+    onLoaded = (character) => {
     this.setState({
         character,
         loading: false

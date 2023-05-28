@@ -8,19 +8,36 @@ class CharList extends Component {
         arrayOfCharacters: [],
         loading: true,
         error: false,
+        requestLoading: false,
+        offset: 210
     }
     characters = new MarvelServices()
     componentDidMount() {
         this.onLoading()
-        this.characters.getAllCharacters()
+        this.onRequest()
+    }
+    onRequest = (offset) => {
+        this.onCharacterListLoading()
+        this.characters.getAllCharacters(offset)
             .then(this.onLoad)
             .catch(this.onError)
     }
+    onCharacterListLoading = () => {
+        this.setState({ requestLoading: true })
+    }
     onLoad = (result) => {
-        this.setState({
-            arrayOfCharacters: result,
-            loading: false
-        })
+        let newArray = []
+        if (JSON.stringify(result) === JSON.stringify(this.state.arrayOfCharacters)) {
+            newArray = [...result ]
+        } else {
+            newArray = [...this.state.arrayOfCharacters, ...result ]
+        }
+        this.setState(({offset}) => ({
+            arrayOfCharacters: newArray,
+            loading: false,
+            requestLoading: false,
+            offset: offset + 9
+        }))
     }
     onError = () => {
         this.setState({
@@ -50,14 +67,17 @@ class CharList extends Component {
         )
     }
     render() {
-        const { arrayOfCharacters, loading, error } = this.state
+        const {  requestLoading, offset, arrayOfCharacters, loading, error } = this.state
         const errorMessage = error ? <ErrorMessage /> : null
         const spinner = loading ? <Spinner /> : null
         const contant = errorMessage ? errorMessage : spinner ? spinner : this.makeLi(arrayOfCharacters)
         return (
             <div className="char__list">
                 {contant}
-                <button className="button button__main button__long">
+                <button className="button button__main button__long"
+                    disabled={requestLoading}
+                    onClick={() => {this.onRequest(offset)}}
+                >
                     <div className="inner">load more</div>
                 </button>
             </div>
