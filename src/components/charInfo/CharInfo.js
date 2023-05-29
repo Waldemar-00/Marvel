@@ -4,6 +4,7 @@ import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
 import Skeleton from '../skeleton/Skeleton'
 import './charInfo.scss'
+import PropTypes from 'prop-types'
 
 class CharInfo extends Component {
     state = {
@@ -15,8 +16,7 @@ class CharInfo extends Component {
     componentDidMount() {
         this.updateCharacter()
     }
-    componentDidUpdate(prevProps, prevState) {
-        console.log(this.state.character)
+    componentDidUpdate(prevProps) { // +prevState
         if (this.props.getIdCharacterFromState !== prevProps.getIdCharacterFromState) {
             this.updateCharacter()
         }
@@ -100,5 +100,7 @@ const View = ({ character }) => {
         </>
     )
 }
-
-export default CharInfo;
+CharInfo.propTypes = {
+    getIdCharacterFromState: PropTypes.number
+}
+export default CharInfo

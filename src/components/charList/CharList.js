@@ -3,6 +3,7 @@ import { Component } from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
+import PropesTypes from 'prop-types'
 class CharList extends Component {
     state = {
         arrayOfCharacters: [],
@@ -90,6 +91,9 @@ class CharList extends Component {
             </div>
         )
     }
+}
+CharList.propsTypes = {
+    upStateForCharacter: PropesTypes.func.isRequired
 }
 
 export default CharList;
