@@ -1,10 +1,10 @@
 import './charList.scss'
-import { Component } from 'react'
+import React from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
 import PropesTypes from 'prop-types'
-class CharList extends Component {
+class CharList extends React.Component {
     state = {
         arrayOfCharacters: [],
         loading: true,
@@ -13,6 +13,7 @@ class CharList extends Component {
         offset: 210,
         end: false
     }
+    characterRefs = []
     characters = new MarvelServices()
     componentDidMount() {
         this.onLoading()
@@ -57,11 +58,22 @@ class CharList extends Component {
         loading:  true,
         })
     }
+    setRef = (li) => {
+        this.characterRefs.push(li)
+    }
+    changeStyle = (index) => {
+        this.characterRefs.forEach((li) => li.classList.remove('char__item_selected'))
+        this.characterRefs[index].classList.add('char__item_selected')
+        this.characterRefs[index].focus()
+    }
     makeLi = (array) => {
-        const list = array.map(li => {
+        const list = array.map((li, index) => {
             const liStyle = li.thumbnail.includes('image_not_available') ? { 'objectFit': 'fill' } : { 'objectFit': 'cover' }
             return (
-                <li className="char__item" key={li.id} onClick={() => this.props.upStateForCharacter(li.id)}>
+                <li className="char__item" key={li.id} ref={this.setRef} onClick={() => {
+                    this.props.upStateForCharacter(li.id)
+                    this.changeStyle(index)
+                }}>
                     <img src={li.thumbnail} alt={li.name} style={liStyle}/>
                     <div className="char__name">{li.name}</div>
                 </li>
