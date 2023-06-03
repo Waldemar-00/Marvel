@@ -61,8 +61,8 @@ class CharList extends React.Component {
     setRef = (li) => {
         this.characterRefs.push(li)
     }
-    changeStyle = (index) => {
-        this.characterRefs.forEach((li) => li.classList.remove('char__item_selected'))
+    focusOnLi = (index) => {
+        this.characterRefs.forEach(li => li.classList.remove('char__item_selected'))
         this.characterRefs[index].classList.add('char__item_selected')
         this.characterRefs[index].focus()
     }
@@ -70,10 +70,21 @@ class CharList extends React.Component {
         const list = array.map((li, index) => {
             const liStyle = li.thumbnail.includes('image_not_available') ? { 'objectFit': 'fill' } : { 'objectFit': 'cover' }
             return (
-                <li className="char__item" key={li.id} ref={this.setRef} onClick={() => {
+                <li className="char__item"
+                    tabIndex={0}
+                    key={li.id}
+                    ref={this.setRef}
+                    onClick={() => {
                     this.props.upStateForCharacter(li.id)
-                    this.changeStyle(index)
-                }}>
+                    this.focusOnLi(index)
+                }}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === 'Tab') {
+                            e.preventDefault()
+                            this.props.upStateForCharacter(li.id)
+                            this.focusOnLi(index)
+                        }
+                    }}>
                     <img src={li.thumbnail} alt={li.name} style={liStyle}/>
                     <div className="char__name">{li.name}</div>
                 </li>
