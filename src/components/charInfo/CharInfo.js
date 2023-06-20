@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useState, useEffect } from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
@@ -6,64 +6,49 @@ import Skeleton from '../skeleton/Skeleton'
 import './charInfo.scss'
 import PropTypes from 'prop-types'
 
-class CharInfo extends Component {
-    state = {
-        loading: false,
-        error: false,
-        character: null
+const CharInfo = (props) => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [character, setCharacter] = useState(null)
+    const marvelServices = new MarvelServices()
+    useEffect(() => {
+        updateCharacter()
+    }, [props.getIdCharacterFromState])
+    const onLoaded = (character) => {
+        setCharacter(character)
+        setLoading(false)
     }
-    marvelServices = new MarvelServices()
-    componentDidMount() {
-        this.updateCharacter()
+    const onLoading = () => {
+        setLoading(true)
     }
-    componentDidUpdate(prevProps) { // +prevState
-        if (this.props.getIdCharacterFromState !== prevProps.getIdCharacterFromState) {
-            this.updateCharacter()
-        }
+    const onError = () => {
+    setLoading(false)
+    setError(true)
     }
-    updateCharacter = () => {
-        const { getIdCharacterFromState } = this.props
+    const updateCharacter = () => {
+        const { getIdCharacterFromState } = props
         if (!getIdCharacterFromState) return
-        this.onLoading()
-        this.marvelServices.getOneCharacter(getIdCharacterFromState)
-            .then(this.onLoaded)
-            .catch(this.onError)
+        onLoading()
+        marvelServices.getOneCharacter(getIdCharacterFromState)
+            .then(onLoaded)
+            .catch(onError)
     }
-    onLoaded = (character) => {
-    this.setState({
-        character,
-        loading: false
-    })
-    }
-    onError = () => {
-        this.setState({
-            loading: false,
-            error: true
-        })
-    }
-    onLoading = () => {
-        this.setState({
-            loading:  true,
-        })
-    }
-    render() {
-        const { loading, error, character } = this.state
-        const skeleton = loading || error || character ? null : <Skeleton/>
-        const spinner = loading ? <Spinner /> : null
-        const errorMessage = error ? <ErrorMessage /> : null
-        const contant = character ? <View character={character} /> : null
-        return (
-            <div className="char__info">
-                {skeleton}
-                {spinner}
-                {errorMessage}
-                {contant}
-            </div>
-        )
-    }
+    const skeleton = loading || error || character ? null : <Skeleton/>
+    const spinner = loading ? <Spinner /> : null
+    const errorMessage = error ? <ErrorMessage /> : null
+    const contant = character ? <View character={character} /> : null
+    return (
+        <div className="char__info">
+            {skeleton}
+            {spinner}
+            {errorMessage}
+            {contant}
+        </div>
+    )
 }
-const View = ({ character }) => {
+function View({ character }) {
     const { name, description, thumbnail, homepage, wiki, comics } = character
+    console.log(comics)
     const style = thumbnail.includes('image_not_available') ? { 'objectFit': 'fill' } :  { 'objectFit': 'cover' }
     return (
         <>

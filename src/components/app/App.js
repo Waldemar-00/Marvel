@@ -4,6 +4,7 @@ import CharList from "../charList/CharList"
 import CharInfo from "../charInfo/CharInfo"
 import { useState } from "react"
 import ErrorBoundary from "../errorBoundary/ErrorBoundary"
+import { PropTypes } from "prop-types"
 
 import decoration from '../../resources/img/vision.png';
 
@@ -31,6 +32,9 @@ const App = () => {
                 </main>
             </div>
         )
+}
+CharList.propsTypes = {
+    upStateForCharacter: PropTypes.func.isRequired
 }
 
 export default App;

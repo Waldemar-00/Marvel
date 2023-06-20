@@ -50,7 +50,6 @@ const CharList = (props) => {
         characterRefs.current[index].focus()
     }
     function makeLi(array) {
-        // array = array.slice(1)
         const list = array.map((li, index) => {
             const liStyle = li.thumbnail.includes('image_not_available') ? { 'objectFit': 'fill' } : { 'objectFit': 'cover' }
             return (
