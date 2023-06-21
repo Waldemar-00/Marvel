@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import './randomChar.scss'
 import mjolnir from '../../resources/img/mjolnir.png'
 import MarvelServices from '../../services/MarvelService'
@@ -9,12 +9,17 @@ const RandomChar = () => {
     const [character, setCharacter] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-    const characters = new MarvelServices()
+    const characters = useMemo(() => new MarvelServices(), [] )
     useEffect(() => {
+        const updateCharacters = () => {
+            characters.getOneCharacter(Math.floor(Math.random() * (1011400 - 1011000) + 1011000))
+                .then(onCharChange)
+                .catch(onError)
+        }
         updateCharacters()
         const timerId = setInterval(updateCharacters, 4000)
         return () => clearInterval(timerId)
-    }, [])
+    }, [characters])
     const onCharChange = (character) => {
         if (!character.description) {
             character.description = 'No description about this character!'
