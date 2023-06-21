@@ -1,5 +1,5 @@
 import './charList.scss'
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect, useRef, useMemo} from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
@@ -12,7 +12,7 @@ const CharList = (props) => {
     const [offset, setOffset] = useState(210)
     const [end, setEnd] = useState(false)
     const characterRefs = useRef([])
-    const characters = new MarvelServices()
+    const characters = useMemo(() => new MarvelServices(), [] )
     useEffect(() => {
         onLoading()
         onRequest()

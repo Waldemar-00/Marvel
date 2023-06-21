@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
@@ -10,10 +10,18 @@ const CharInfo = (props) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [character, setCharacter] = useState(null)
-    const marvelServices = new MarvelServices()
+    const marvelServices = useMemo(()=> new MarvelServices(), []) 
     useEffect(() => {
+        const updateCharacter = () => {
+        const { getIdCharacterFromState } = props
+            if (!getIdCharacterFromState) return
+            onLoading()
+        marvelServices.getOneCharacter(getIdCharacterFromState)
+        .then(onLoaded)
+        .catch(onError)
+        }
         updateCharacter()
-    }, [props.getIdCharacterFromState])
+    }, [marvelServices, props])
     const onLoaded = (character) => {
         setCharacter(character)
         setLoading(false)
@@ -24,14 +32,6 @@ const CharInfo = (props) => {
     const onError = () => {
     setLoading(false)
     setError(true)
-    }
-    const updateCharacter = () => {
-        const { getIdCharacterFromState } = props
-        if (!getIdCharacterFromState) return
-        onLoading()
-        marvelServices.getOneCharacter(getIdCharacterFromState)
-            .then(onLoaded)
-            .catch(onError)
     }
     const skeleton = loading || error || character ? null : <Skeleton/>
     const spinner = loading ? <Spinner /> : null
