@@ -14,9 +14,26 @@ const CharList = (props) => {
     const characterRefs = useRef([])
     const characters = useMemo(() => new MarvelServices(), [] )
     useEffect(() => {
-        onLoading()
+        const  onLoad = (result) => {
+            let stop
+            if (result.length < 9) {
+                stop = true
+            }
+            setArrayOfCharacters(arrayOfCharacters =>  [...arrayOfCharacters, ...result])
+            setLoading(false)
+            setRequestLoading(false)
+            setOffset(offset => offset + 9)
+            setEnd(stop)
+        }
+        const onRequest = (offset) => {
+            onRequestLoading()
+            characters.getAllCharacters(offset)
+                .then(onLoad)
+                .catch(onError)
+        }
+        setLoading(true)
         onRequest()
-    }, [] )
+    }, [characters] )
     const onRequest = (offset) => {
         onRequestLoading()
         characters.getAllCharacters(offset)
@@ -41,9 +58,9 @@ const CharList = (props) => {
         setLoading(false)
         setError(true)
         }
-    const onLoading = () => {
-        setLoading(true)
-    }
+    // const onLoading = () => {
+        // setLoading(true)
+    // }
     const focusOnLi = (index) => {
         characterRefs.current.forEach(li => li.classList.remove('char__item_selected'))
         characterRefs.current[index].classList.add('char__item_selected')
