@@ -14,12 +14,12 @@ const CharList = (props) => {
     const characterRefs = useRef([])
     const characters = useMemo(() => new MarvelServices(), [] )
     useEffect(() => {
-        const  onLoad = (result) => {
+        const onLoad = (result) => {
             let stop
             if (result.length < 9) {
                 stop = true
             }
-            setArrayOfCharacters(arrayOfCharacters =>  [...arrayOfCharacters, ...result])
+            setArrayOfCharacters([ ...result])
             setLoading(false)
             setRequestLoading(false)
             setOffset(offset => offset + 9)
@@ -48,7 +48,7 @@ const CharList = (props) => {
         if (result.length < 9) {
             stop = true
         }
-        setArrayOfCharacters(arrayOfCharacters =>  [...arrayOfCharacters, ...result])
+        setArrayOfCharacters(arrayOfCharacters => [...arrayOfCharacters, ...result])
         setLoading(false)
         setRequestLoading(false)
         setOffset(offset + 9)
@@ -58,9 +58,6 @@ const CharList = (props) => {
         setLoading(false)
         setError(true)
         }
-    // const onLoading = () => {
-        // setLoading(true)
-    // }
     const focusOnLi = (index) => {
         characterRefs.current.forEach(li => li.classList.remove('char__item_selected'))
         characterRefs.current[index].classList.add('char__item_selected')
@@ -77,7 +74,7 @@ const CharList = (props) => {
                     onClick={() => {
                     props.upStateForCharacter(li.id)
                     focusOnLi(index)
-                }}
+                    }}
                     onKeyPress={(e) => {
                         if (e.key === ' ' || e.key === 'Tab') {
                             e.preventDefault()
