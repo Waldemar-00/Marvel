@@ -2,9 +2,9 @@ import './singleComic.scss'
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect} from 'react'
 import Spinner from '../spinner/Spinner'
-import ErrorMessage from '../error/ErrorMessage'
 import MarvelServices from '../../services/MarvelService'
-import useHttp  from "../../hooks/http.hook"
+import useHttp from "../../hooks/http.hook"
+import NoMatch from './NoMatch'
 
 const SingleComic = () => {
   const { comicId } = useParams()
@@ -30,20 +30,13 @@ const SingleComic = () => {
     setSpinner(false)
     setError(true)
   }
-  const styles = {
-    h2: {
-      color: '#9f0013',
-      textAlign: 'center',
-      marginTop: '15px'
-    }
-  }
   const loadSpinner = spinner ? <Spinner /> : null
-  const errorMessage = error ? <ErrorMessage /> : null
+  const errorMessage = error ? <NoMatch /> : null
   const contant = comic ? <View comic={comic} /> : null
   return (
     <>
       {loadSpinner} 
-      {[errorMessage, <h2 style={styles.h2}>Check your URL</h2>]}
+      {errorMessage}
       {contant}
     </>
     )
