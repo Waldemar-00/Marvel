@@ -3,6 +3,7 @@ import CharList from "../charList/CharList"
 import CharInfo from "../charInfo/CharInfo"
 import ErrorBoundary from "../errorBoundary/ErrorBoundary"
 import decoration from '../../resources/img/vision.png'
+import CharSearchForm from "../charSearchForm/CharSearchForm"
 import { PropTypes } from "prop-types"
 import { useState } from "react"
 const Main = () => {
@@ -19,9 +20,14 @@ const Main = () => {
         <ErrorBoundary>
           <CharList upStateForCharacter={onSelectedCharacter} />
         </ErrorBoundary>
-        <ErrorBoundary>
-          <CharInfo getIdCharacterFromState={character} />
-        </ErrorBoundary>
+        <div>
+          <ErrorBoundary>
+            <CharInfo getIdCharacterFromState={character} />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <CharSearchForm/>
+          </ErrorBoundary>
+        </div>
       </div>
       <img className="bg-decoration" src={decoration} alt="vision" />
     </>

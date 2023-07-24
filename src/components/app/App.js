@@ -2,6 +2,7 @@ import AppHeader from "../appHeader/AppHeader"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { lazy, Suspense } from 'react'
 import Spinner from '../spinner/Spinner'
+
 const NoMatch = lazy(() => import('../pages/NoMatch'))
 const Main = lazy(() => import('../pages/Main'))
 const Comics = lazy(() => import('../pages/Comics'))

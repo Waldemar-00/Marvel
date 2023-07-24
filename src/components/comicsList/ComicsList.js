@@ -16,7 +16,7 @@ const ComicsList = () => {
     const service = new MarvelService();
 
     useEffect(() => {
-        onRequest(offset, true)
+      onRequest(offset, true)
     }, [])
 
     const onRequest = (offset, initial) => {
