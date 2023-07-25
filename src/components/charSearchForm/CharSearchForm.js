@@ -12,7 +12,7 @@ import './charSearchForm.scss'
 const CharSearchForm = () => {
   const [char, setChar] = useState(null) 
   const service = useMemo(() => new MarvelService(), [])
-  const {clearError} = useHttp()
+  const {clearError, loading, error} = useHttp()
   //{loading, error, getCharacterByName, clearError}
 
     const onCharLoaded = (char) => {
@@ -23,15 +23,17 @@ const CharSearchForm = () => {
         clearError() 
         service.getCharacterByName(name)
             .then(onCharLoaded) 
-    }
+  }
+//https://gateway.marvel.com:443/v1/public/characters?name=Thor&apikey=bd8673ecbff251cdb59ed3a0d89b43e2
+//https://gateway.marvel.com:443/v1/public/characters/undefined?apikey=bd8673ecbff251cdb59ed3a0d89b43e2
 //`https://gateway.marvel.com:443/v1/public/characters/${char[0].id}?apikey=bd8673ecbff251cdb59ed3a0d89b43e2`
   //https://www.marvel.com/characters/gamora
-    const errorMessage = service.error ? <div className="char__search-critical-error"><ErrorMessage /></div> : null 
+    const errorMessage = error ? <div className="char__search-critical-error"><ErrorMessage /></div> : null 
     const results = !char ? null : char.length > 0 ?
                     <div className="char__search-wrapper">
                         <div className="char__search-success">There is! Visit {char[0].name} page?</div>
-                        <Link to={`https://www.marvel.com/characters/${char[0].name}`} className="button button__secondary">
-                            <div className="inner">To page</div>
+                        <Link to={`/character/${char[0].id}`} className="button button__secondary">
+                          <div className="inner">To page</div>
                         </Link>
                     </div> : 
                     <div className="char__search-error">
@@ -62,7 +64,7 @@ const CharSearchForm = () => {
                         <button 
                             type='submit' 
                             className="button button__main"
-                            disabled={service.loading}>
+                            disabled={loading}>
                             <div className="inner">find</div>
                         </button>
                     </div>

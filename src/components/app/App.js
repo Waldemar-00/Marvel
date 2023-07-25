@@ -2,11 +2,14 @@ import AppHeader from "../appHeader/AppHeader"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { lazy, Suspense } from 'react'
 import Spinner from '../spinner/Spinner'
+import SingleCharacterLayout from '../singleCharacterLayout/SingleCharacterLayout'
+import SingleComicLayout from '../singleComicLayout/SingleComicLayout'
 
 const NoMatch = lazy(() => import('../pages/NoMatch'))
 const Main = lazy(() => import('../pages/Main'))
 const Comics = lazy(() => import('../pages/Comics'))
-const SingleComic = lazy(() => import('../pages/SingleComic'))
+// const SingleComic = lazy(() => import('../pages/SingleComic'))
+const SinglePage = lazy(() => import('../pages/SinglePage'))
 const App = () => {
   return (
     <Router>
@@ -26,7 +29,12 @@ const App = () => {
             } />
             <Route path='/comics/:comicId' element={
               <Suspense fallback={<Spinner/>}>
-                <SingleComic />
+                <SinglePage Component={SingleComicLayout} dataType='comic'/>
+              </Suspense>
+            } />
+            <Route path='/characters/:comicId' element={
+              <Suspense fallback={<Spinner/>}>
+                <SinglePage Component={SingleCharacterLayout} dataType='character'/>
               </Suspense>
             } />
             <Route path='*' element={
@@ -41,4 +49,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App  
