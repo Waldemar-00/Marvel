@@ -6,6 +6,7 @@ import decoration from '../../resources/img/vision.png'
 import CharSearchForm from "../charSearchForm/CharSearchForm"
 import { PropTypes } from "prop-types"
 import { useState } from "react"
+import {Helmet} from 'react-helmet'
 const Main = () => {
   const [character, setCharacter] = useState(null)
   const onSelectedCharacter = (id) => {
@@ -13,6 +14,13 @@ const Main = () => {
   }
   return (
     <>
+      <Helmet>
+        <meta
+          name="description"
+          content="Marvel information"
+        />
+        <title>Marvel information portal</title>
+      </Helmet>
       <ErrorBoundary>
         <RandomChar />
       </ErrorBoundary>
